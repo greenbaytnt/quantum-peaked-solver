@@ -203,8 +203,6 @@ class DefaultPeakedSolver:
                 del amplitudes
                 del bitstrings
                 self._clear_gpu_memory()
-                self._force_gpu_reset()
-                self._force_gpu_cache_clear()
                 if target_state:
                     return target_state
 
