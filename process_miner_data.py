@@ -103,6 +103,13 @@ def move_to_queue(file_path: Path, base_path: Path) -> Optional[Path]:
         new_path = queue_dir / file_path.name
         file_path.rename(new_path)
         logging.info(f"  Claimed: {file_path.name}")
+        filename = file_path.stem
+        if '_' in filename:
+            cid = filename.split('_')[0]
+            qasm_path = base_path.parent / f"{cid}.qasm"
+            qasm_new_path = qasm_path.parent / "queue" / f"{cid}.qasm"
+            qasm_path.rename(qasm_new_path)
+            logging.info(f"  Moved to: {qasm_new_path.name}")
         return new_path
     except FileNotFoundError:
         # Another process already moved it
