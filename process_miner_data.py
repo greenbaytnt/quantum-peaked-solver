@@ -109,7 +109,7 @@ def move_to_queue(file_path: Path, base_path: Path) -> Optional[Path]:
             logging.info(f"  CID: {cid}")
             qasm_path = base_path / f"{cid}.qasm"
             logging.info(f"  QASM Path: {qasm_path}")
-            qasm_new_path = qasm_path.parent / "queue" / f"{cid}.qasm"
+            qasm_new_path = queue_dir / f"{cid}.qasm"
             logging.info(f"  QASM New Path: {qasm_new_path}")
             qasm_path.rename(qasm_new_path)
             logging.info(f"  Moved to: {qasm_new_path.name}")
