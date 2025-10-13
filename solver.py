@@ -1,8 +1,6 @@
 import gc
 import logging
 
-from ..simulator import create_simulator
-from ..task_processors import PeakedCircuitProcessor
 import re
 import time
 import os
