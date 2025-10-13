@@ -89,10 +89,10 @@ def process_circuit(data: Dict[str, Any], file_path: Path) -> bool:
         with open(save_path, 'w', encoding='utf-8') as f:
             json.dump(payload, f, indent=2)
         logging.info(f"  Saved result to: {save_path}")
-        return True, save_path
+        return True
     except Exception as e:
         logging.error(f"  Error saving result: {e}")
-        return False, None
+        return False
 
 
 def move_to_queue(file_path: Path, base_path: Path) -> Optional[Path]:
@@ -122,7 +122,7 @@ def move_to_queue(file_path: Path, base_path: Path) -> Optional[Path]:
         return None
 
 
-def move_to_result(file_path: Path, base_path: Path, success: bool, save_path: Optional[Path] = None) -> None:
+def move_to_result(file_path: Path, base_path: Path, success: bool) -> None:
     """Move file from queue to processed or failed directory"""
     try:
         result_dir = base_path.parent / ("processed" if success else "failed")
@@ -130,10 +130,12 @@ def move_to_result(file_path: Path, base_path: Path, success: bool, save_path: O
         new_path = result_dir / file_path.name
         file_path.rename(new_path)
         logging.info(f"  Moved to: {result_dir.name}/{file_path.name}")
-        if save_path:
-            new_save_path = save_path.parent / ("processed" if success else "failed") / save_path.name
-            save_path.rename(new_save_path)
-            logging.info(f"  Moved to: {new_save_path.name}")
+        if success:
+            cid = file_path.stem.split('_')[0]
+            qasm_path = file_path.parent / f"{cid}.qasm"
+            new_qasm_path = new_path.parent / f"{cid}.qasm"
+            qasm_path.rename(new_qasm_path)
+            logging.info(f"  Moved to: {new_qasm_path.name}")
     except Exception as e:
         logging.error(f"  Error moving to result: {e}")
 
@@ -171,13 +173,13 @@ def process_loop(base_path: str = "/root/sn63/peaked_circuits",
     
     # Process the circuit
     try:
-        success, save_path = process_circuit(data, queued_file)
+        success = process_circuit(data, queued_file)
     except Exception as e:
         logging.error(f"Processing failed: {e}")
         success = False
     
     # Move to result directory
-    move_to_result(queued_file, base, success, save_path)
+    move_to_result(queued_file, base, success)
         
 
 

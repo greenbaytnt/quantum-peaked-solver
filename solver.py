@@ -239,9 +239,9 @@ class DefaultPeakedSolver:
                 self._clear_gpu_memory()
                 
                 start_time = time.time()
-                sim = create_simulator("qiskit", method="statevector", device=device)
-                logging.info(f"Attempting statevector simulation on device: {getattr(sim, 'device', 'unknown')}")
-                logging.info(f"Create simulator Time taken: {time.time() - start_time}")
+                # sim = create_simulator("qiskit", method="statevector", device=device)
+                # logging.info(f"Attempting statevector simulation on device: {getattr(sim, 'device', 'unknown')}")
+                # logging.info(f"Create simulator Time taken: {time.time() - start_time}")
                 
                 # Estimate memory requirement and wait for GPU memory
                 required_memory = self._estimate_memory_requirement(devide_num)
@@ -250,17 +250,17 @@ class DefaultPeakedSolver:
                 
                 if not self._wait_for_gpu_memory(required_memory):
                     logging.warning("GPU memory not available, proceeding with CPU")
-                start_time = time.time()
+                # start_time = time.time()
                 statevector = self.get_statevector(qasm)
                 logging.info(f"Get statevector Time taken: {time.time() - start_time}")
                 
                 start_time = time.time()
                 if statevector is not None:
-                    processor = PeakedCircuitProcessor(use_exact=True)
-                    logging.info(f"Create processor Time taken: {time.time() - start_time}")
+                    # processor = PeakedCircuitProcessor(use_exact=True)
+                    # logging.info(f"Create processor Time taken: {time.time() - start_time}")
                     
                     start_time = time.time()
-                    result = processor.process(statevector)
+                    result = self.process(statevector)
                     peak_bitstring = result.get("peak_bitstring")
                     bitstrings = result.get("bitstrings")
                     logging.info(f"Process statevector Time taken: {time.time() - start_time}")
@@ -271,9 +271,9 @@ class DefaultPeakedSolver:
                     
                     # Explicit cleanup in reverse order of creation
                     del result
-                    del processor
+                    # del processor
                     del statevector
-                    del sim
+                    # del sim
                     
                     # Clear GPU memory after processing
                     self._clear_gpu_memory()
