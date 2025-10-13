@@ -160,11 +160,11 @@ class DefaultPeakedSolver:
             start_time = time.time()
             num_qubits = self._count_qubits(qasm)
 
-            logging.info(f"Solving circuit with {num_qubits} qubits")
-            logging.info(f"==========Qasm: {len(qasm)}")
-            logging.info(f"==========cid: {cid}")
-            logging.info(f"==========validator_hotkey: {validator_hotkey}")
-            logging.info(f"==========difficulty_level: {difficulty_level}")
+            # logging.info(f"Solving circuit with {num_qubits} qubits")
+            # logging.info(f"==========Qasm: {len(qasm)}")
+            # logging.info(f"==========cid: {cid}")
+            # logging.info(f"==========validator_hotkey: {validator_hotkey}")
+            # logging.info(f"==========difficulty_level: {difficulty_level}")
 
             if num_qubits > 32:
                 devide_num = 30
@@ -192,7 +192,7 @@ class DefaultPeakedSolver:
                 target_state = amplitudes[0][0]
                 logging.info(f"amplitudes:\n{amplitudes}")
                 logging.info(f"target state: {target_state}")
-                logging.info(f"bitstrings:\n{bitstrings}")
+                # logging.info(f"bitstrings:\n{bitstrings}")
                 logging.info(f"Time taken: {time.time() - start_time}")
                 logging.info("=" * 50 + "\n")
                 del result_under
