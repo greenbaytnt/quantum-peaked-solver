@@ -157,7 +157,6 @@ class DefaultPeakedSolver:
             Most probable bitstring, or empty string if failed
         """
         try:
-            logging.info(f"Solving circuit with {qasm}")
             start_time = time.time()
             num_qubits = self._count_qubits(qasm)
 
@@ -299,7 +298,6 @@ class DefaultPeakedSolver:
         import re
 
         for line in qasm.split("\n"):
-            logging.info(f"Line: {line}")
             if line.strip().startswith("qreg"):
                 match = re.search(r"qreg\s+\w+\[(\d+)\]", line)
                 if match:
@@ -510,7 +508,7 @@ creg c[{nqubits - devide_num}];
             circuit = self._parse_qasm(qasm)
             circuit_no_meas = circuit.remove_final_measurements(inplace=False)
 
-            backend_sv = AerSimulator(method="statevector", device=self.device)
+            backend_sv = AerSimulator(method="statevector", device="GPU")
             circuit_no_meas.save_statevector()  # type: ignore
             job = backend_sv.run(circuit_no_meas, shots=1)
             result = job.result()
