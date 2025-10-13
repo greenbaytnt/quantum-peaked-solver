@@ -104,11 +104,13 @@ def move_to_queue(file_path: Path, base_path: Path) -> Optional[Path]:
         file_path.rename(new_path)
         logging.info(f"  Claimed: {file_path.name}")
         filename = file_path.stem
-        logging.info(f"  Filename: {filename}")
         if '_' in filename:
             cid = filename.split('_')[0]
+            logging.info(f"  CID: {cid}")
             qasm_path = base_path / f"{cid}.qasm"
+            logging.info(f"  QASM Path: {qasm_path}")
             qasm_new_path = qasm_path.parent / "queue" / f"{cid}.qasm"
+            logging.info(f"  QASM New Path: {qasm_new_path}")
             qasm_path.rename(qasm_new_path)
             logging.info(f"  Moved to: {qasm_new_path.name}")
         return new_path
