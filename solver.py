@@ -157,6 +157,7 @@ class DefaultPeakedSolver:
             Most probable bitstring, or empty string if failed
         """
         try:
+            logging.info(f"Solving circuit with {qasm}")
             start_time = time.time()
             num_qubits = self._count_qubits(qasm)
 
