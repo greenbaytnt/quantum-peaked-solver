@@ -299,6 +299,7 @@ class DefaultPeakedSolver:
         import re
 
         for line in qasm.split("\n"):
+            logging.info(f"Line: {line}")
             if line.strip().startswith("qreg"):
                 match = re.search(r"qreg\s+\w+\[(\d+)\]", line)
                 if match:
