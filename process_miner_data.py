@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 
 
-def get_oldest_json_file(base_path: str = "/ubuntu/sn63/peaked_circuits") -> Optional[Path]:
+def get_oldest_json_file(base_path: str = "/home/ubuntu/sn63/peaked_circuits") -> Optional[Path]:
     """Get the oldest JSON file by timestamp in filename (excluding queue, processed, failed dirs)"""
     base = Path(base_path)
     if not base.exists():
@@ -82,7 +82,7 @@ def process_circuit(data: Dict[str, Any], file_path: Path) -> bool:
         "validator_hotkey": validator_hotkey
     }
     
-    save_path = Path(f"/ubuntu/sn63-quantum/qbittensor/miner/{miner_name}/peaked_circuits/solved_circuits/{cid}.json")
+    save_path = Path(f"/home/ubuntu/sn63-quantum/qbittensor/miner/{miner_name}/peaked_circuits/solved_circuits/{cid}.json")
     
     try:
         save_path.parent.mkdir(parents=True, exist_ok=True)
@@ -140,7 +140,7 @@ def move_to_result(file_path: Path, base_path: Path, success: bool) -> None:
         logging.error(f"  Error moving to result: {e}")
 
 
-def process_loop(base_path: str = "/ubuntu/sn63/peaked_circuits", 
+def process_loop(base_path: str = "/home/ubuntu/sn63/peaked_circuits", 
                  delay: float = 1.0) -> None:
     """Continuously process oldest files using queue system"""
     base = Path(base_path)
@@ -184,7 +184,7 @@ def process_loop(base_path: str = "/ubuntu/sn63/peaked_circuits",
 
 
 if __name__ == "__main__":
-    base_path = "/ubuntu/sn63/peaked_circuits"
+    base_path = "/home/ubuntu/sn63/peaked_circuits"
     
     logging.info(f"Starting process with PID: {os.getpid()}")
     logging.info(f"Processing circuits from: {base_path}")
