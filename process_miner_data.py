@@ -130,12 +130,12 @@ def move_to_result(file_path: Path, base_path: Path, success: bool) -> None:
         new_path = result_dir / file_path.name
         file_path.rename(new_path)
         logging.info(f"  Moved to: {result_dir.name}/{file_path.name}")
-        if success:
-            cid = file_path.stem.split('_')[0]
-            qasm_path = file_path.parent / f"{cid}.qasm"
-            new_qasm_path = new_path.parent / f"{cid}.qasm"
-            qasm_path.rename(new_qasm_path)
-            logging.info(f"  Moved to: {new_qasm_path.name}")
+        # if success:
+        cid = file_path.stem.split('_')[0]
+        qasm_path = file_path.parent / f"{cid}.qasm"
+        new_qasm_path = new_path.parent / f"{cid}.qasm"
+        qasm_path.rename(new_qasm_path)
+        logging.info(f"  Moved to: {new_qasm_path.name}")
     except Exception as e:
         logging.error(f"  Error moving to result: {e}")
 
