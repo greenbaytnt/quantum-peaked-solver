@@ -167,7 +167,7 @@ class DefaultPeakedSolver:
             # logging.info(f"==========difficulty_level: {difficulty_level}")
 
             if num_qubits > 32:
-                devide_num = 31
+                devide_num = 30
                 split_num = 9
                 parsed_qasm = self.parse_qasm(qasm, devide_num, under=True)
                 result_under, bitstrings_under = self._run(parsed_qasm, devide_num)
