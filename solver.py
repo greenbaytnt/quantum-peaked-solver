@@ -605,7 +605,7 @@ creg c[{nqubits - devide_num}];
         
         # Sort all candidates and take top 5
         top_candidates.sort(key=lambda x: x[1], reverse=True)
-        top_5_candidates = top_candidates[:5]
+        top_5_candidates = top_candidates[:10]
         
         # Generate results with pre-computed format string
         bitstring_format = f"0{n_qubits}b"
