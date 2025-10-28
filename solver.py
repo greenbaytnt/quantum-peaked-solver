@@ -465,6 +465,8 @@ creg c[{nqubits - devide_num}];
                 target_int = int(target_bitstring[0], 2)
                 amplitude = state.get_amplitude(target_int)
                 amplitudes.append((target_bitstring[0], np.abs(amplitude)**2))
+                if np.abs(amplitude)**2 > 1e-10:
+                    break
                 del target_int
                 del amplitude
             
