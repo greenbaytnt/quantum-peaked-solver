@@ -148,10 +148,14 @@ def process_loop(base_path: str = "/home/ubuntu/sn63/peaked_circuits",
     # Get oldest file from main directory
     oldest_file = get_oldest_json_file(base_path)
     
+    last_log_time = 0
     while True:
     
         if not oldest_file:
-            logging.info("No more files to process")
+            current_time = time.time()
+            if current_time - last_log_time >= 300:  # 5 minutes = 300 seconds
+                logging.info("No more files to process for 5 minutes")
+                last_log_time = current_time
             time.sleep(delay)
             oldest_file = get_oldest_json_file(base_path)
         else:
