@@ -123,19 +123,36 @@ def move_to_queue(file_path: Path, base_path: Path) -> Optional[Path]:
 
 
 def move_to_result(file_path: Path, base_path: Path, success: bool) -> None:
-    """Move file from queue to processed or failed directory"""
+    """Move file from queue to processed directory or back to original path if failed"""
     try:
-        result_dir = base_path.parent / ("processed" if success else "failed")
-        result_dir.mkdir(exist_ok=True)
-        new_path = result_dir / file_path.name
-        file_path.rename(new_path)
-        logging.info(f"  Moved to: {result_dir.name}/{file_path.name}")
-        # if success:
-        cid = file_path.stem.split('_')[0]
-        qasm_path = file_path.parent / f"{cid}.qasm"
-        new_qasm_path = new_path.parent / f"{cid}.qasm"
-        qasm_path.rename(new_qasm_path)
-        logging.info(f"  Moved to: {new_qasm_path.name}")
+        if success:
+            # Move to processed directory
+            result_dir = base_path.parent / "processed"
+            result_dir.mkdir(exist_ok=True)
+            new_path = result_dir / file_path.name
+            file_path.rename(new_path)
+            logging.info(f"  Moved JSON to: {result_dir.name}/{file_path.name}")
+            
+            # Move QASM file to processed
+            cid = file_path.stem.split('_')[0]
+            qasm_path = file_path.parent / f"{cid}.qasm"
+            if qasm_path.exists():
+                new_qasm_path = result_dir / f"{cid}.qasm"
+                qasm_path.rename(new_qasm_path)
+                logging.info(f"  Moved QASM to: {result_dir.name}/{cid}.qasm")
+        else:
+            # Move back to original path (peaked_circuits)
+            new_path = base_path / file_path.name
+            file_path.rename(new_path)
+            logging.info(f"  Moved JSON back to original: {base_path.name}/{file_path.name}")
+            
+            # Move QASM file back to original path
+            cid = file_path.stem.split('_')[0]
+            qasm_path = file_path.parent / f"{cid}.qasm"
+            if qasm_path.exists():
+                new_qasm_path = base_path / f"{cid}.qasm"
+                qasm_path.rename(new_qasm_path)
+                logging.info(f"  Moved QASM back to original: {base_path.name}/{cid}.qasm")
     except Exception as e:
         logging.error(f"  Error moving to result: {e}")
 
@@ -171,19 +188,21 @@ def process_loop(base_path: str = "/home/ubuntu/sn63/peaked_circuits",
     # Read file from queue
     data = read_json_file(queued_file)
     if not data:
-        logging.error("Invalid file, moving to failed")
+        logging.error("Invalid file, moving back to original path")
         move_to_result(queued_file, base, False)
         return
     
     # Process the circuit
     try:
         success = process_circuit(data, queued_file)
+        # Move to result directory
+        move_to_result(queued_file, base, success)
     except Exception as e:
         logging.error(f"Processing failed: {e}")
         success = False
+        move_to_result(queued_file, base, success)
     
-    # Move to result directory
-    move_to_result(queued_file, base, success)
+    
         
 
 
