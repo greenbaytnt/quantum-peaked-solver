@@ -189,6 +189,8 @@ class DefaultPeakedSolver:
                 
                 self._wait_for_gpu_memory(18)
                 amplitudes = self.calculate_amplitude_from_qasm(qasm, bitstrings)
+                if not amplitudes:
+                    return ""
                 target_state = amplitudes[0][0]
                 logging.info(f"amplitudes:\n{amplitudes}")
                 logging.info(f"target state: {target_state}")

@@ -75,6 +75,8 @@ def process_circuit(data: Dict[str, Any], file_path: Path) -> bool:
     peaked_solver = DefaultPeakedSolver()
     result = peaked_solver.solve(qasm_to_process, cid, validator_hotkey)
     
+    if not result:
+        return False
     payload = {
         "challenge_id": cid,
         "solution_bitstring": result,
