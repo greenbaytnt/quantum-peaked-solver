@@ -144,7 +144,7 @@ def move_to_result(file_path: Path, base_path: Path, success: bool) -> None:
                 logging.info(f"  Moved QASM to: {result_dir.name}/{cid}.qasm")
         else:
             # Move back to original path (peaked_circuits)
-            new_path = base_path / file_path.name
+            new_path = base_path.parent / "peaked_circuits" / file_path.name
             file_path.rename(new_path)
             logging.info(f"  Moved JSON back to original: {base_path.name}/{file_path.name}")
             
@@ -152,7 +152,7 @@ def move_to_result(file_path: Path, base_path: Path, success: bool) -> None:
             cid = file_path.stem.split('_')[0]
             qasm_path = file_path.parent / f"{cid}.qasm"
             if qasm_path.exists():
-                new_qasm_path = base_path / f"{cid}.qasm"
+                new_qasm_path = base_path.parent / "peaked_circuits" / f"{cid}.qasm"
                 qasm_path.rename(new_qasm_path)
                 logging.info(f"  Moved QASM back to original: {base_path.name}/{cid}.qasm")
     except Exception as e:
